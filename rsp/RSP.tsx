@@ -63,7 +63,7 @@ const RSP = () => {
       setScore((prevScore) => prevScore + 1)
     } else {
       setResult("졌습니다!")
-      setScore((prevScore) => prevScore - 11)
+      setScore((prevScore) => prevScore - 1)
     }
     setTimeout(() => {
       interval.current = window.setInterval(changeHand, 100)
