@@ -26,7 +26,7 @@ const Lotto = () => {
   const timeouts = useRef<number[]>([])
 
   useEffect(() => {
-    for (let i = 0; i < winNumbers.length; i++) {
+    for (let i = 0; i < winNumbers.length - 1; i++) {
       timeouts.current[i] = window.setTimeout(() => {
         setWinBalls((preBalls) => [...preBalls, winNumbers[i]])
       }, (i + 1) * 1000)
