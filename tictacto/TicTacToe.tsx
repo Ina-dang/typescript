@@ -100,6 +100,13 @@ const reducer = (state: ReducerState, action: ReducerActions): ReducerState => {
 }
 
 const TicTacToe = () => {
+  const [state, dispatch] = useReducer(reducer, initialState)
+  const { tableData, turn, winner, recentCell } = state
+
+  const onClickTable = useCallback(() => {
+    dispatch(setWinner("O"))
+  }, [])
+
   return (
     <>
       {/* <Table onClick={onClickTable} tableData={tableData} dispatch={dispatch} />
