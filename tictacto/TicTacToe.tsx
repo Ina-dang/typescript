@@ -1,11 +1,11 @@
 import * as React from "react"
 import { useEffect, useCallback, useReducer, Reducer } from "react"
-// import Table from "./Table"
+import Table from "./Table"
 
 interface ReducerState {
   winner: "O" | "X" | ""
   turn: "O" | "X"
-  tableData: String[][]
+  tableData: string[][]
   recentCell: [number, number]
 }
 
@@ -103,14 +103,67 @@ const TicTacToe = () => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const { tableData, turn, winner, recentCell } = state
 
+  useEffect(() => {
+    const [row, cell] = recentCell
+    let win = false
+
+    if (
+      tableData[row][0] === turn &&
+      tableData[row][1] === turn &&
+      tableData[row][2] === turn
+    ) {
+      win = true
+    }
+    if (
+      tableData[0][cell] === turn &&
+      tableData[1][cell] === turn &&
+      tableData[2][cell] === turn
+    ) {
+      win = true
+    }
+    if (
+      tableData[0][0] === turn &&
+      tableData[1][1] === turn &&
+      tableData[2][2] === turn
+    ) {
+      win = true
+    }
+    if (
+      tableData[0][2] === turn &&
+      tableData[1][1] === turn &&
+      tableData[2][0] === turn
+    ) {
+      win = true
+    }
+
+    if (win) {
+      dispatch({ type: SET_WINNER, winner: turn })
+      dispatch({ type: RESET_GAME })
+    } else {
+      let all = true //무승부
+      tableData.forEach((row) => {
+        row.forEach((cell) => {
+          if (!cell) {
+            all = false
+          }
+        })
+      })
+      if (all) {
+        dispatch({ type: RESET_GAME })
+      } else {
+        dispatch({ type: CHANGE_TURN })
+      }
+    }
+  }, [recentCell])
+
   const onClickTable = useCallback(() => {
     dispatch(setWinner("O"))
   }, [])
 
   return (
     <>
-      {/* <Table onClick={onClickTable} tableData={tableData} dispatch={dispatch} />
-      {winner && <div>{winner}님의 승리</div>} */}
+      <Table onClick={onClickTable} tableData={tableData} dispatch={dispatch} />
+      {winner && <div>{winner}님의 승리</div>}
     </>
   )
 }

@@ -25,7 +25,7 @@ interface State {
   redo: boolean
 }
 
-class Lotto extends Component<{}, State> {
+class LottoClass extends Component<{}, State> {
   state: State = {
     winNumbers: getWinNumbers(),
     winBalls: [],
@@ -105,4 +105,4 @@ class Lotto extends Component<{}, State> {
   }
 }
 
-export default Lotto
+export default LottoClass
