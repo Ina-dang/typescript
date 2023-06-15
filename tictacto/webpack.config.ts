@@ -9,7 +9,7 @@ interface Configuration extends WebpackConfiguration {
 }
 
 const config: Configuration = {
-  name: "lotto-dev",
+  name: "tictactoe-dev",
   mode: "development",
   devtool: "eval",
   resolve: {

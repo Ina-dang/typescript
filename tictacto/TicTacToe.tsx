@@ -105,6 +105,10 @@ const TicTacToe = () => {
 
   useEffect(() => {
     const [row, cell] = recentCell
+    if (row < 0) {
+      return
+    }
+
     let win = false
 
     if (
