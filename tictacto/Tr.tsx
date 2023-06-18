@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Dispatch, useMemo, FC } from "react"
+import { Dispatch, useMemo, memo, FC } from "react"
 import Td from "./Td"
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
   dispatch: Dispatch<any>
 }
 
-const Tr: FC<Props> = ({ rowData, rowIndex, dispatch }) => {
+const Tr: FC<Props> = memo(({ rowData, rowIndex, dispatch }) => {
   return (
     <tr>
       {Array(rowData.length)
@@ -31,6 +31,6 @@ const Tr: FC<Props> = ({ rowData, rowIndex, dispatch }) => {
         )}
     </tr>
   )
-}
+})
 
 export default Tr
