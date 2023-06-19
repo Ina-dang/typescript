@@ -172,7 +172,90 @@ type ReducerActions =
   | NormalizeCellAction
   | IncrementTimerAction
 
+const reducer = (
+  state = initialState,
+  action: ReducerActions
+): ReducerState => {
+  switch (action.type) {
+    case START_GAME: {
+      return {
+        ...state,
+        data: {
+          row: action.row,
+          cell: action.cell,
+          mine: action.mine,
+        },
+        openedCount: 0,
+        // tableData: plantMine(action.row, action.cell, action.mine),
+        halted: false,
+        timer: 0,
+      }
+    }
+
+    case OPEN_CELL:
+
+    case CLICK_MINE: {
+      const tableData = [...state.tableData]
+      tableData[action.row] = [...state.tableData[action.row]]
+      tableData[action.row][action.cell] = CODE.CLICKED_MINE
+      return {
+        ...state,
+        tableData,
+        halted: true,
+      }
+    }
+    case FLAG_CELL: {
+      const tableData = [...state.tableData]
+      tableData[action.row] = [...state.tableData[action.row]]
+      if (tableData[action.row][action.cell] === CODE.MINE) {
+        tableData[action.row][action.cell] = CODE.FLAG_MINE
+      } else {
+        tableData[action.row][action.cell] = CODE.FLAG
+      }
+      return {
+        ...state,
+        tableData,
+      }
+    }
+    case QUESTION_CELL: {
+      const tableData = [...state.tableData]
+      tableData[action.row] = [...state.tableData[action.row]]
+      if (tableData[action.row][action.cell] === CODE.FLAG_MINE) {
+        tableData[action.row][action.cell] = CODE.QUESTION_MINE
+      } else {
+        tableData[action.row][action.cell] = CODE.QUESTION
+      }
+      return {
+        ...state,
+        tableData,
+      }
+    }
+    case NORMALIZE_CELL: {
+      const tableData = [...state.tableData]
+      tableData[action.row] = [...state.tableData[action.row]]
+      if (tableData[action.row][action.cell] === CODE.QUESTION_MINE) {
+        tableData[action.row][action.cell] = CODE.MINE
+      } else {
+        tableData[action.row][action.cell] = CODE.NORMAL
+      }
+      return {
+        ...state,
+        tableData,
+      }
+    }
+    case INCREMENT_TIMER: {
+      return {
+        ...state,
+        timer: state.timer + 1,
+      }
+    }
+    default:
+      return state
+  }
+}
+
 const MimeSearch = () => {
   return <></>
 }
+
 export default MimeSearch
