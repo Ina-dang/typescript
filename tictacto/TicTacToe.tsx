@@ -166,6 +166,10 @@ const TicTacToe = () => {
     dispatch(setWinner("O"))
   }, [])
 
+  /**
+   * return () React.Node
+   * return안에 들어있는 태그들 React JSX || React Element
+   */
   return (
     <>
       <Table onClick={onClickTable} tableData={tableData} dispatch={dispatch} />
