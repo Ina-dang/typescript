@@ -12,6 +12,19 @@ export const CODE = {
   OPENED: 0, //0이상이면 다 OPENED
 } as const //바뀔일이 없으니 as const로 상수지정해주기
 
+interface Context {
+  tableData: number[][]
+  halted: boolean
+  dispatch: Dispatch<ReducerActions>
+}
+
+export const TableContext = createContext<Context>({
+  //바로 최하단까지 내려보내기
+  tableData: [],
+  halted: true,
+  dispatch: () => {},
+})
+
 // states를 중앙에서 관리
 interface ReducerState {
   tableData: number[][]
@@ -255,7 +268,33 @@ const reducer = (
 }
 
 const MimeSearch = () => {
-  return <></>
+  const [state, dispatch] = useReducer(reducer, initialState)
+  const { tableData, halted, timer, result } = state
+
+  const value = useMemo(
+    () => ({ tableData, halted, dispatch }),
+    [tableData, halted]
+  )
+
+  useEffect(() => {
+    let timer: number
+    if (halted === false) {
+      timer = window.setInterval(() => {
+        dispatch({ type: INCREMENT_TIMER })
+      }, 1000)
+    }
+    return () => {
+      clearInterval(timer)
+    }
+  }, [halted])
+  return (
+    <TableContext.Provider value={value}>
+      {/* <Form/> */}
+      <div>{timer}</div>
+      {/* <Table/> */}
+      <div>{result}</div>
+    </TableContext.Provider>
+  )
 }
 
 export default MimeSearch
