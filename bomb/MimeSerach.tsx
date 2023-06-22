@@ -1,5 +1,8 @@
 import * as React from "react"
 import { useEffect, useReducer, createContext, useMemo, Dispatch } from "react"
+import Form from "./Form"
+import Table from "./Table"
+
 import {
   ReducerActions,
   START_GAME,
@@ -19,10 +22,10 @@ export const CODE = {
   QUESTION_MINE: -4,
   FLAG_MINE: -5,
   CLICKED_MINE: -6,
-  OPENED: 0, //0이상이면 다 OPENED
-} as const //바뀔일이 없으니 as const로 상수지정해주기
-export type Codes = (typeof CODE)[keyof typeof CODE]
+  OPENED: 0, // 0 이상이면 다 opened
+} as const
 
+export type Codes = (typeof CODE)[keyof typeof CODE]
 interface Context {
   tableData: Codes[][]
   halted: boolean
@@ -30,13 +33,11 @@ interface Context {
 }
 
 export const TableContext = createContext<Context>({
-  //바로 최하단까지 내려보내기
   tableData: [],
   halted: true,
   dispatch: () => {},
 })
 
-// states를 중앙에서 관리
 interface ReducerState {
   tableData: Codes[][]
   data: {
@@ -63,8 +64,7 @@ const initialState: ReducerState = {
   openedCount: 0,
 }
 
-//지뢰심기
-const plantMine = (row: number, cell: number, mine: number) => {
+const plantMine = (row: number, cell: number, mine: number): Codes[][] => {
   const candidate = Array(row * cell)
     .fill(undefined)
     .map((arr, i) => {
@@ -73,24 +73,28 @@ const plantMine = (row: number, cell: number, mine: number) => {
   const shuffle = []
   while (candidate.length > row * cell - mine) {
     const chosen = candidate.splice(
-      Math.floor(Math.random() & candidate.length),
+      Math.floor(Math.random() * candidate.length),
       1
     )[0]
     shuffle.push(chosen)
   }
-  const data = []
+  const data: Codes[][] = []
   for (let i = 0; i < row; i++) {
-    const rowData: number[] = []
+    const rowData: Codes[] = []
     data.push(rowData)
     for (let j = 0; j < cell; j++) {
       rowData.push(CODE.NORMAL)
     }
   }
+
   for (let k = 0; k < shuffle.length; k++) {
     const ver = Math.floor(shuffle[k] / cell)
     const hor = shuffle[k] % cell
     data[ver][hor] = CODE.MINE
   }
+
+  console.log(data)
+  return data
 }
 
 const reducer = (
@@ -98,7 +102,7 @@ const reducer = (
   action: ReducerActions
 ): ReducerState => {
   switch (action.type) {
-    case START_GAME: {
+    case START_GAME:
       return {
         ...state,
         data: {
@@ -107,12 +111,10 @@ const reducer = (
           mine: action.mine,
         },
         openedCount: 0,
-        // tableData: plantMine(action.row, action.cell, action.mine),
+        tableData: plantMine(action.row, action.cell, action.mine),
         halted: false,
         timer: 0,
       }
-    }
-
     case OPEN_CELL: {
       const tableData = [...state.tableData]
       tableData.forEach((row, i) => {
@@ -282,7 +284,7 @@ const reducer = (
   }
 }
 
-const MimeSearch = () => {
+const MineSearch = () => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const { tableData, halted, timer, result } = state
 
@@ -304,12 +306,12 @@ const MimeSearch = () => {
   }, [halted])
   return (
     <TableContext.Provider value={value}>
-      {/* <Form/> */}
+      <Form />
       <div>{timer}</div>
-      {/* <Table/> */}
+      <Table />
       <div>{result}</div>
     </TableContext.Provider>
   )
 }
 
-export default MimeSearch
+export default MineSearch
