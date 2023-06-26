@@ -17,8 +17,8 @@ const Games = () => {
       </div>
       <div>
         <Routes>
-          <Route path="/" />
-          <Route path="/game/:name" />
+          <Route path="/" Component={GameMatcher} />
+          <Route path="/game/:name" Component={GameMatcher} />
         </Routes>
       </div>
     </BrowserRouter>
