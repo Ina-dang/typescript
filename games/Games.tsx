@@ -1,7 +1,7 @@
 import * as React from "react"
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom"
-import GameMatcher from "./GameMatcherClass"
-import GameMatcherClass from "./GameMatcherClass"
+import GameMatcher from "./GameMatcher"
+// import GameMatcherClass from "./GameMatcherClass"
 
 const Games = () => {
   return (
@@ -17,8 +17,8 @@ const Games = () => {
       </div>
       <div>
         <Routes>
-          <Route path="/" Component={GameMatcher} />
-          <Route path="/game/:name" Component={GameMatcher} />
+          <Route path="/" element={<GameMatcher />} />
+          <Route path="/game/:name" element={<GameMatcher />} />
         </Routes>
       </div>
     </BrowserRouter>
