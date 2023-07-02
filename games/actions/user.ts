@@ -1,3 +1,5 @@
+import { addPost } from "./post"
+
 export const LOG_IN_REQUEST = "LOG_IN_REQUEST" as const
 export const LOG_IN_SUCCESS = "LOG_IN_SUCCESS" as const
 export const LOG_IN_FAILURE = "LOG_IN_FAILURE" as const
@@ -7,17 +9,65 @@ export interface LogInRequestAction {
   type: typeof LOG_IN_REQUEST
   data: { id: string; password: string }
 }
+
+export const logInRequest = (data: {
+  id: string
+  password: string
+}): LogInRequestAction => {
+  return {
+    type: LOG_IN_REQUEST,
+    data,
+  }
+}
 export interface LogInSuccessAction {
   type: typeof LOG_IN_SUCCESS
-  data: { id: string; nickname: string }
+  data: { userId: number; nickname: string }
+}
+
+export const logInSuccess = (data: {
+  userId: number
+  nickname: string
+}): LogInSuccessAction => {
+  return {
+    type: LOG_IN_SUCCESS,
+    data,
+  }
 }
 export interface LogInFailureAction {
   type: typeof LOG_IN_FAILURE
-  err: Error
+  error: Error
+}
+export const logInFailure = (error: Error): LogInFailureAction => {
+  return {
+    type: LOG_IN_FAILURE,
+    error,
+  }
 }
 
-export const logIn = (data: { id: string; password: string }) => {
-  //thunk 구현할거
+interface ThunkDispatch {
+  (thunkAction: ThunkAction): void
+  <A>(action: A): A //AnyAction 임의의 함수 받을 수 있도록 오버로딩 선언도해줌
+  <TAction>(action: TAction | ThunkAction): TAction
+}
+
+type ThunkAction = (dispatch: ThunkDispatch) => void
+export const logIn = (data: { id: string; password: string }): ThunkAction => {
+  return (dispatch) => {
+    dispatch(logInRequest(data))
+    try {
+      setTimeout(() => {
+        dispatch(
+          logInSuccess({
+            userId: 1,
+            nickname: "inadang",
+          })
+        )
+        dispatch(addPost(""))
+      }, 1000)
+    } catch (err) {
+      dispatch(logInFailure(err))
+    }
+  }
 }
 
 export interface LogOutAction {
