@@ -7,4 +7,6 @@ const reducer = combineReducers({
   posts: postReducer,
 })
 
+//함수의 리턴타입을 가져옴
+export type RootState = ReturnType<typeof reducer>
 export default reducer
