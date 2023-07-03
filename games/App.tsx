@@ -1,41 +1,58 @@
+import { action } from "mobx"
+import { useLocalStore, useObserver } from "mobx-react"
 import * as React from "react"
-import { FC } from "react"
-import { Dispatch } from "redux"
-import { useDispatch, useSelector } from "react-redux"
-import { logIn, logOut } from "./actions/user"
-import { RootState } from "./reducers"
-import { UserState } from "./reducers/user"
+import { useCallback } from "react"
 
-const App: FC = () => {
-  const { isLoggingIn, data } = useSelector<RootState, UserState>(
-    (state) => state.user
-  )
-  const dispatch = useDispatch()
+import { postStore, userStore } from "./store"
 
-  const onClick = () => {
-    dispatch(logIn({ id: "inadang", password: "pwd" }))
-  }
+const App = () => {
+  //mobx의 state
+  const state = useLocalStore(() => ({
+    name: "",
+    password: "",
+    onChangeName: action(function (e) {
+      this.name = e.target.value
+    }),
+    onChangePassword: action(function (e) {
+      this.password = e.target.value
+    }),
+  }))
 
-  const onLogout = () => {
-    dispatch(logOut())
-  }
+  const onLogIn = useCallback(() => {
+    userStore.logIn({
+      nickname: state.name,
+      password: state.password,
+    })
+  }, [state.name, state.password])
 
-  return (
+  const onLogOut = useCallback(() => {
+    userStore.logOut()
+  }, [])
+
+  return useObserver(() => (
     <div>
-      {isLoggingIn ? (
+      {userStore.isLoggingIn ? (
         <div>로그인중</div>
-      ) : data ? (
-        <div>{data.nickname}</div>
+      ) : userStore.data ? (
+        <div>{userStore.data.nickname}</div>
       ) : (
         "로그인해주세요"
       )}
-      {!data ? (
-        <button onClick={onClick}>로그인</button>
+      {!userStore.data ? (
+        <button onClick={onLogIn}>로그인</button>
       ) : (
-        <button onClick={onLogout}>로그아웃</button>
+        <button onClick={onLogOut}>로그아웃</button>
       )}
+      <div>
+        <input value={state.name} onChange={state.onChangeName} />
+        <input
+          value={state.password}
+          type="password"
+          onChange={state.onChangePassword}
+        />
+      </div>
     </div>
-  )
+  ))
 }
 
 export default App
