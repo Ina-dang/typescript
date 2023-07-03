@@ -44,7 +44,7 @@ export const logInFailure = (error: Error): LogInFailureAction => {
   }
 }
 
-interface ThunkDispatch {
+export interface ThunkDispatch {
   (thunkAction: ThunkAction): void
   <A>(action: A): A //AnyAction 임의의 함수 받을 수 있도록 오버로딩 선언도해줌
   <TAction>(action: TAction | ThunkAction): TAction
@@ -64,7 +64,7 @@ export const logIn = (data: { id: string; password: string }): ThunkAction => {
         )
         dispatch(addPost(""))
       }, 1000)
-    } catch (err) {
+    } catch (err: any) {
       dispatch(logInFailure(err))
     }
   }

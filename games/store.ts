@@ -28,9 +28,7 @@ const firstMiddleware =
   }
 
 const thunkMiddleware =
-  (store: MiddlewareAPI) =>
-  (next: Dispatch<AnyAction>) =>
-  (action: AnyAction) => {
+  (store: MiddlewareAPI) => (next: Dispatch<AnyAction>) => (action: any) => {
     if (typeof action === "function") {
       //비동기
       return action(store.dispatch, store.getState)
@@ -41,7 +39,7 @@ const thunkMiddleware =
 //미들웨어 장착 및 환경에따라 분리
 const enhancer =
   process.env.NODE_ENV === "production"
-    ? compose(applyMiddleware(firstMiddleware))
+    ? compose(applyMiddleware(firstMiddleware, thunkMiddleware))
     : composeWithDevTools(applyMiddleware(firstMiddleware, thunkMiddleware))
 
 const store = createStore(reducer, initialState, enhancer)

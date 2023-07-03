@@ -1,3 +1,4 @@
+import { produce } from "immer"
 import {
   LOG_IN_FAILURE,
   LOG_IN_REQUEST,
@@ -14,7 +15,7 @@ export interface UserState {
   data: { nickname: string } | null
 }
 
-const initialState = {
+const initialState: UserState = {
   isLoggingIn: false,
   data: null,
 }
@@ -25,21 +26,27 @@ type UserReducerActions =
   | LogInSuccessAction
   | LogOutAction
 const userReducer = (prevState = initialState, action: UserReducerActions) => {
-  switch (action.type) {
-    case LOG_IN_REQUEST:
-      return
-    case LOG_IN_SUCCESS:
-      return
-    case LOG_IN_FAILURE:
-      return
-    case LOG_OUT:
-      return {
-        ...prevState,
-        data: null,
-      }
-    default:
-      return prevState
-  }
+  return produce(prevState, (draft) => {
+    switch (action.type) {
+      case LOG_IN_REQUEST:
+        draft.data = null
+        draft.isLoggingIn = true
+        break
+      case LOG_IN_SUCCESS:
+        draft.data = action.data
+        draft.isLoggingIn = false
+        break
+      case LOG_IN_FAILURE:
+        draft.data = null
+        draft.isLoggingIn = false
+        break
+      case LOG_OUT:
+        draft.data = null
+        break
+      default:
+        break
+    }
+  })
 }
 
 export default userReducer
