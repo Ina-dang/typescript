@@ -1,61 +1,41 @@
 import * as React from "react"
-import { Component } from "react"
+import { FC } from "react"
 import { Dispatch } from "redux"
-import { connect } from "react-redux"
-import { ThunkDispatch, logIn, logOut } from "./actions/user"
+import { useDispatch, useSelector } from "react-redux"
+import { logIn, logOut } from "./actions/user"
 import { RootState } from "./reducers"
 import { UserState } from "./reducers/user"
 
-interface StateToProps {
-  user: UserState
-}
+const App: FC = () => {
+  const { isLoggingIn, data } = useSelector<RootState, UserState>(
+    (state) => state.user
+  )
+  const dispatch = useDispatch()
 
-interface DispatchToProps {
-  dispatchLogIn: ({ id, password }: { id: string; password: string }) => void
-  dispatchLogOut: () => void
-}
-class App extends Component<StateToProps & DispatchToProps> {
-  onClick = () => {
-    this.props.dispatchLogIn({
-      id: "inadang",
-      password: "pwd",
-    })
+  const onClick = () => {
+    dispatch(logIn({ id: "inadang", password: "pwd" }))
   }
 
-  onLogout = () => {
-    this.props.dispatchLogOut()
+  const onLogout = () => {
+    dispatch(logOut())
   }
 
-  render() {
-    const { user } = this.props
-
-    return (
-      <div>
-        {user.isLoggingIn ? (
-          <div>로그인중</div>
-        ) : user.data ? (
-          <div>{user.data.nickname}</div>
-        ) : (
-          "로그인해주세요"
-        )}
-        {!user.data ? (
-          <button onClick={this.onClick}>로그인</button>
-        ) : (
-          <button onClick={this.onLogout}>로그아웃</button>
-        )}
-      </div>
-    )
-  }
+  return (
+    <div>
+      {isLoggingIn ? (
+        <div>로그인중</div>
+      ) : data ? (
+        <div>{data.nickname}</div>
+      ) : (
+        "로그인해주세요"
+      )}
+      {!data ? (
+        <button onClick={onClick}>로그인</button>
+      ) : (
+        <button onClick={onLogout}>로그아웃</button>
+      )}
+    </div>
+  )
 }
 
-const mapStateToProps = (state: RootState) => ({
-  user: state.user,
-}) //reselect
-
-const mapDispatchToProps = (dispatch: ThunkDispatch) => ({
-  dispatchLogIn: (data: { id: string; password: string }) =>
-    dispatch(logIn(data)),
-  dispatchLogOut: () => dispatch(logOut()),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default App

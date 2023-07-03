@@ -51,7 +51,13 @@ export interface ThunkDispatch {
 }
 
 type ThunkAction = (dispatch: ThunkDispatch) => void
-export const logIn = (data: { id: string; password: string }): ThunkAction => {
+
+export interface login {
+  id: string
+  password: string
+}
+
+export const logIn = (data: login): ThunkAction => {
   return (dispatch) => {
     dispatch(logInRequest(data))
     try {
@@ -59,7 +65,7 @@ export const logIn = (data: { id: string; password: string }): ThunkAction => {
         dispatch(
           logInSuccess({
             userId: 1,
-            nickname: "inadang",
+            nickname: "zerocho",
           })
         )
         dispatch(addPost(""))
