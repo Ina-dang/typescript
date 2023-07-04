@@ -5,15 +5,28 @@ import { useCallback } from "react"
 
 import { postStore, userStore } from "./store"
 
+interface LocalStore {
+  name: string
+  password: string
+  onChangeName: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onChangePassword: (e: React.ChangeEvent<HTMLInputElement>) => void
+}
+
 const App = () => {
   //mobx의 state
   const state = useLocalStore(() => ({
     name: "",
     password: "",
-    onChangeName: action(function (e) {
+    onChangeName: action(function (
+      this: LocalStore,
+      e: React.ChangeEvent<HTMLInputElement>
+    ) {
       this.name = e.target.value
     }),
-    onChangePassword: action(function (e) {
+    onChangePassword: action(function (
+      this: LocalStore,
+      e: React.ChangeEvent<HTMLInputElement>
+    ) {
       this.password = e.target.value
     }),
   }))
