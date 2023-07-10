@@ -1,8 +1,11 @@
 import * as React from "react"
-import { createRoot } from "react-dom/client"
+import ReactDOM from "react-dom" // react v17 버전용
 
-import ResponseCheck from "./ResponseCheck"
+import NumberBaseball from "./NumberBaseball"
 
-const container = document.getElementById("root")
-const root = createRoot(container!) // createRoot(container!) if you use TypeScript
-root.render(<ResponseCheck />)
+ReactDOM.render(
+  <React.StrictMode>
+    <NumberBaseball />
+  </React.StrictMode>,
+  document.getElementById("root")
+)
