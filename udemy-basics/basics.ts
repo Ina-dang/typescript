@@ -89,7 +89,8 @@ printOutput(123123)
 /**
  * @description 제네릭(Generics) => 매개변수랑, 함수명사이에 사용 => 함수에 안정성과 유연성을 동시에 지정
  * 꺾쇠 괄호를 사용하여 제네릭 유형을 정의할 수 있을 뿐만 아니라 제네릭 유형을 사용하고 사용해야 하는 자리 표시자 유형을 명시적으로 설정할 수도 있다
- * 때로는 TypeScript가 (올바른) 유형을 유추할 수 없는 경우에 필요
+ * 때로는 TypeScript가 (올바른) 유형을 유추할 수 없는 경우에 필요 (any 타입은 타입검사를 하지 않음)
+ * 이 떄 제내릭을 쓰면 함수의 입력 값에 대한 타입과 출력 값에 대한 타입이 동일한지 검증할 수 있게 됩니다.
  */
 // function insertAtBeginning(array: any[], value: any) {
 function insertAtBeginning<T>(array: T[], value: T) {
