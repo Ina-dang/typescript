@@ -1,6 +1,7 @@
 import React from 'react';
 import { FC } from 'react';
 import { Todo } from '../models/todo';
+import TodoItem from './TodoItem';
 
 // react에서 프롭스는 언제나 객체형태
 // const Todos = (props: { items: string[], children }) => {
@@ -9,7 +10,7 @@ const Todos: FC<{ items: Todo[] }> = (props) => {
   return (
     <ul>
       {props.items.map((item) => (
-        <li key={item.id}>{item.text}</li>
+        <TodoItem key={item.id} text={item.text} />
       ))}
     </ul>
   );
