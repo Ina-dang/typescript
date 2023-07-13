@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import MeetupList from '../components/meetups/MeetupList';
 
 const DUMMY_MEETUPS = [
@@ -26,12 +25,19 @@ const DUMMY_MEETUPS = [
   },
 ];
 
-const HomePage = () => {
-  const [loaded, setLoaded] = useState([]);
-  useEffect(() => {
-    setLoaded(DUMMY_MEETUPS);
-  }, []);
-  return <MeetupList meetups={loaded} />;
+const HomePage = (props) => {
+  return <MeetupList meetups={props.meetups} />;
 };
+
+//SSG-사전랜더링
+export async function getStaticProps() {
+  //클라이언트사이드에 들어가지 않음. 빌드 프로세스중에 실행되기때문
+  //fetch data from an API ...
+  return {
+    props: {
+      meetups: DUMMY_MEETUPS,
+    },
+  }; //꼭 객체를 반환해야함 주로 프롭스 반환
+}
 
 export default HomePage;
