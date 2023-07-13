@@ -37,6 +37,7 @@ export async function getStaticProps() {
     props: {
       meetups: DUMMY_MEETUPS,
     },
+    revalidate: 10, //점진적 정적 생성 기능 (regenerate) 페이지에 요청이 들어오면 10초마다 서버에서 페이지 다시 생성
   }; //꼭 객체를 반환해야함 주로 프롭스 반환
 }
 
