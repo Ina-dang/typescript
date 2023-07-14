@@ -1,34 +1,19 @@
-import MeetupList from '../components/meetups/MeetupList';
 import { MongoClient } from 'mongodb';
-import { mongoSet } from '../utils/mongo';
+import Head from 'next/head';
 
-const DUMMY_MEETUPS = [
-  {
-    id: 'm1',
-    title: '첫번째 모임',
-    image: 'https://t1.daumcdn.net/cfile/tistory/996AD63C5A56FE5633',
-    address: '영등포구청 3번 출구',
-    description: '첫번째 모임!',
-  },
-  {
-    id: 'm2',
-    title: '두번째 모임',
-    image: 'https://thumb.mt.co.kr/06/2018/10/2018102416372894434_3.jpg',
-    address: '영등포구청 3번 출구',
-    description: '두번째 모임!',
-  },
-  {
-    id: 'm3',
-    title: '세번째 모임',
-    image:
-      'https://ichef.bbci.co.uk/news/640/cpsprodpb/1784B/production/_110113369_japandrinkinggetty.jpg',
-    address: '영등포구청 3번 출구',
-    description: '세번째 모임!',
-  },
-];
+import MeetupList from '../components/meetups/MeetupList';
+import { Fragment } from 'react';
 
 const HomePage = (props) => {
-  return <MeetupList meetups={props.meetups} />;
+  return (
+    <Fragment>
+      <Head>
+        <title>모임기록지</title>
+        <meta name='description' content='술자리 약속 담기' />
+      </Head>
+      <MeetupList meetups={props.meetups} />
+    </Fragment>
+  );
 };
 
 //SSR 서버요청 방식
