@@ -2,6 +2,7 @@ import classes from './MeetupDetail.module.css';
 import Link from 'next/link';
 
 const MeetupDetail = (props) => {
+  console.log('@@@@', props);
   return (
     <section className={classes.detail}>
       <img src={props.image} alt={props.title} />
