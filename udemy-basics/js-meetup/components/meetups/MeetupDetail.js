@@ -1,7 +1,7 @@
 import classes from './MeetupDetail.module.css';
 import Link from 'next/link';
 
-const MeetupDatail = (props) => {
+const MeetupDetail = (props) => {
   return (
     <section className={classes.detail}>
       <img src={props.image} alt={props.title} />
@@ -15,4 +15,4 @@ const MeetupDatail = (props) => {
   );
 };
 
-export default MeetupDatail;
+export default MeetupDetail;
