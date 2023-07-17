@@ -1,7 +1,10 @@
+type Combinable = number | string;
+type ConversionDescriptor = 'as-number' | 'as-string';
+
 function combine(
-  n1: number | string,
-  n2: number | string,
-  resultConversion: 'as-number' | 'as-string'
+  n1: Combinable,
+  n2: Combinable,
+  resultConversion: ConversionDescriptor
 ) {
   let result;
   if (
@@ -27,3 +30,10 @@ console.log(combinedAges);
 
 const combinedNames = combine('Max', 'Anya', 'as-string');
 console.log(combinedNames);
+
+type User = { name: string; age: number };
+const u1: User = { name: 'Max', age: 30 };
+function greet(user: User) {
+  console.log("Hi, I'm " + user.name);
+}
+greet(u1);
