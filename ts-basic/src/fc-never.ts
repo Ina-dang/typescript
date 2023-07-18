@@ -26,6 +26,8 @@ if (typeof userInput === 'string') {
   userName = userInput;
 }
 
+var lit = 3;
+
 //never:  아무것도 반환하지 않겠다는걸 명시적으로 보여줌
 function generateError(message: string, code: number): never {
   throw { message: message, errorCode: code };
