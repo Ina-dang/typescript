@@ -1,39 +1,36 @@
-type Combinable = number | string;
-type ConversionDescriptor = 'as-number' | 'as-string';
-
-function combine(
-  n1: Combinable,
-  n2: Combinable,
-  resultConversion: ConversionDescriptor
-) {
-  let result;
-  if (
-    (typeof n1 === 'number' && typeof n2 === 'number') ||
-    resultConversion === 'as-number'
-  ) {
-    result = +n1 + +n2;
-  } else {
-    result = n1.toString() + n2.toString();
-  }
-  // if (resultConversion === 'as-numnber') {
-  //   return +result;
-  // } else {
-  //   return result.toString();
-  // }
-  return result;
+function add(n1: number, n2: number) {
+  return n1 + n2;
+}
+// 반환문이 없을 때 void
+function printResult(num: number): void {
+  console.log('Result:: ', num);
 }
 
-const combinedAges = combine(25, 27, 'as-number');
-console.log(combinedAges);
-const combinedStringAges = combine('25', '27', 'as-number');
-console.log(combinedAges);
+printResult(add(5, 12));
 
-const combinedNames = combine('Max', 'Anya', 'as-string');
-console.log(combinedNames);
+let someValue: undefined;
 
-type User = { name: string; age: number };
-const u1: User = { name: 'Max', age: 30 };
-function greet(user: User) {
-  console.log("Hi, I'm " + user.name);
+let combineValues: Function;
+
+combineValues = add;
+// combineValues = 5 //Type 'number' is not assignable to type 'Function'.ts(2322)
+
+console.log(combineValues(8, 8));
+
+let userInput: unknown;
+let userName: string;
+
+userInput = 5;
+userInput = 'Max';
+if (typeof userInput === 'string') {
+  userName = userInput;
 }
-greet(u1);
+
+//never:  아무것도 반환하지 않겠다는걸 명시적으로 보여줌
+function generateError(message: string, code: number): never {
+  throw { message: message, errorCode: code };
+}
+
+const errorResult = generateError('An error occured!', 500);
+
+console.log(errorResult);
