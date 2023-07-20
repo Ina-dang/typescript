@@ -3,16 +3,19 @@
 // }
 
 class Department {
-  name: string;
+  // private id: string;
+  // private name: string;
   private employees: string[] = [];
 
-  constructor(n: string) {
-    this.name = n;
+  // constructor(id: string, n: string) {
+  constructor(private id: string, public name: string) {
+    // this.id= id;
+    // this.name = n;
   }
 
   describe(this: Department) {
     // console.log('Department: ', age); //Cannot find name 'age'.ts(2304)
-    console.log('Department: ', this.name);
+    console.log(`Department(${this.id}): ${this.name}`);
   }
 
   addEmployee(employee: string) {
@@ -24,8 +27,7 @@ class Department {
     console.log(this.employees);
   }
 }
-
-const accounting = new Department('Accounting');
+const accounting = new Department('D', 'Accounting');
 
 console.log(accounting);
 accounting.describe();
