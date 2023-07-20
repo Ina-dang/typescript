@@ -1,21 +1,23 @@
-//null 관리하는 여러가지방법 ! ? if
-
-// const button = document.querySelector('button')!;
-const button = document.querySelector('button');
-const clickHandler = (message: string) => {
-  console.log('클릭!' + message);
+// 나머지 매개변수
+const sum = (...numbers: number[]) => {
+  let result = 0;
+  numbers.reduce((acc, cur) => {
+    return (result = acc + cur);
+  });
+  return result;
 };
-button?.addEventListener('click', clickHandler.bind(null, 'Mimi'));
+console.log(sum(1, 5, 2, 45, 6));
 
-// if(button){
-//   button.addEventListener('click', () => {
-//     console.log('클릭!');
-//   });
-// }
+// 배열 및 객체 비구조화 할당
 
-function numbers(n1: number, n2: number) {
-  if (n1 + n2 > 0) {
-    return n1 + n2;
-  }
-  return;
-}
+const hobbies = ['Sports', 'Cooking', 'Game', 'Shopping'];
+const [hobby1, hobby2, ...remainingHobbies] = hobbies;
+console.log(hobby1, hobbies);
+
+const introduce = {
+  firstName: 'Lee',
+  age: 30,
+};
+const { firstName, age } = introduce;
+
+console.log(age);
