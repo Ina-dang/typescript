@@ -3,15 +3,10 @@
 // }
 
 class Department {
-  // private id: string;
-  // private name: string;
-  private employees: string[] = [];
+  protected employees: string[] = [];
 
-  // constructor(id: string, n: string) {
-  constructor(private id: string, public name: string) {
-    // this.id= id;
-    // this.name = n;
-  }
+  //readonly 특정속성 초기화 이후에는 변경 불가하도록 함 => 안전성 증가, 명확한 의도전달
+  constructor(private readonly id: string, public name: string) {}
 
   describe(this: Department) {
     // console.log('Department: ', age); //Cannot find name 'age'.ts(2304)
@@ -27,10 +22,58 @@ class Department {
     console.log(this.employees);
   }
 }
-const accounting = new Department('D', 'Accounting');
 
-console.log(accounting);
-accounting.describe();
+class ITDepartment extends Department {
+  constructor(id: string, public admins: string[]) {
+    super(id, 'IT');
+    this.admins = admins;
+  }
+}
+
+class AccountingDepartment extends Department {
+  private lastReport: string;
+
+  get mostRecentReport() {
+    if (this.lastReport) {
+      return this.lastReport;
+    }
+    throw new Error('No report found.');
+  }
+
+  set mostRecentReport(value: string) {
+    if (!value) {
+      throw new Error('Please pass in a valid value!');
+    }
+    this.addReport(value);
+  }
+
+  constructor(id: string, public reports: string[]) {
+    super(id, 'Accounting');
+    this.lastReport = reports[0];
+  }
+
+  addEmployee(name: string) {
+    if (name === 'Max') {
+      return;
+    }
+    this.employees.push(name);
+  }
+
+  addReport(text: string) {
+    this.reports.push(text);
+    this.lastReport = text;
+  }
+
+  printReports() {
+    console.log(this.reports);
+  }
+}
+
+// const accounting = new Department('D', 'Accounting');
+const it = new ITDepartment('D', ['Max']);
+
+console.log(it);
+it.describe();
 
 // const accountingCopy = { describe: accounting.describe };
 // accountingCopy.describe(); //undefined
@@ -39,10 +82,20 @@ accounting.describe();
 // const accountingCopy = { name: 'Laura', describe: accounting.describe };
 // accountingCopy.describe();
 
-accounting.addEmployee('Mark');
-accounting.addEmployee('Jax');
+it.addEmployee('Mark');
+it.addEmployee('Jax');
 
 // accounting.employees[2] = 'Anna'; //Property 'employees' is private and only accessible within class 'Department'.ts(2341)
 
-accounting.describe();
+it.describe();
+it.printEmployeeInformation();
+console.log(it);
+
+const accounting = new AccountingDepartment('d2', []);
+accounting.mostRecentReport = 'Year and Report';
+accounting.addReport('Somthing went wrong...');
+accounting.addEmployee('Max');
+console.log(accounting.mostRecentReport);
+accounting.addEmployee('Alura');
+accounting.printReports();
 accounting.printEmployeeInformation();
