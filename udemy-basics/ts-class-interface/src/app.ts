@@ -3,14 +3,22 @@
 // }
 
 class Department {
+  static fiscalAYear = 2023;
   protected employees: string[] = [];
 
   //readonly 특정속성 초기화 이후에는 변경 불가하도록 함 => 안전성 증가, 명확한 의도전달
   constructor(private readonly id: string, public name: string) {}
 
+  //static (ex. Math )
+  static createEmployee(name: string) {
+    return { name: name };
+  }
+
   describe(this: Department) {
     // console.log('Department: ', age); //Cannot find name 'age'.ts(2304)
     console.log(`Department(${this.id}): ${this.name}`);
+    // console.log(this.fiscalYear) //Property 'fiscalYear' does not exist on type 'Department'.ts(2339)
+    // console.log(Department.fiscalAYear) //OK
   }
 
   addEmployee(employee: string) {
@@ -99,3 +107,6 @@ console.log(accounting.mostRecentReport);
 accounting.addEmployee('Alura');
 accounting.printReports();
 accounting.printEmployeeInformation();
+
+const employee1 = Department.createEmployee('Laura');
+console.log(employee1, Department.fiscalAYear);
