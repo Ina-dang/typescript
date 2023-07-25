@@ -2,24 +2,27 @@
 //   constructor() {} //클래스와 연결되며 객체가 생성되며 실행되는 클래스에 기반해 연결하는 객체에 대한 초기화 작업
 // }
 
-class Department {
+abstract class Department {
   static fiscalAYear = 2023;
   protected employees: string[] = [];
 
   //readonly 특정속성 초기화 이후에는 변경 불가하도록 함 => 안전성 증가, 명확한 의도전달
-  constructor(private readonly id: string, public name: string) {}
+  constructor(protected readonly id: string, public name: string) {}
 
   //static (ex. Math )
   static createEmployee(name: string) {
     return { name: name };
   }
 
-  describe(this: Department) {
-    // console.log('Department: ', age); //Cannot find name 'age'.ts(2304)
-    console.log(`Department(${this.id}): ${this.name}`);
-    // console.log(this.fiscalYear) //Property 'fiscalYear' does not exist on type 'Department'.ts(2339)
-    // console.log(Department.fiscalAYear) //OK
-  }
+  // describe(this: Department) {
+  //   // console.log('Department: ', age); //Cannot find name 'age'.ts(2304)
+  //   console.log(`Department(${this.id}): ${this.name}`);
+  //   // console.log(this.fiscalYear) //Property 'fiscalYear' does not exist on type 'Department'.ts(2339)
+  //   // console.log(Department.fiscalAYear) //OK
+  // }
+
+  //추상클래스
+  abstract describe(this: Department): void;
 
   addEmployee(employee: string) {
     this.employees.push(employee);
@@ -32,12 +35,16 @@ class Department {
 }
 
 class ITDepartment extends Department {
-  constructor(id: string, public admins: string[]) {
+  admins: string[];
+  constructor(id: string, admins: string[]) {
     super(id, 'IT');
     this.admins = admins;
   }
-}
 
+  describe() {
+    console.log('IT Department - ID: ' + this.id);
+  }
+}
 class AccountingDepartment extends Department {
   private lastReport: string;
 
@@ -75,6 +82,10 @@ class AccountingDepartment extends Department {
   printReports() {
     console.log(this.reports);
   }
+
+  describe() {
+    console.log('IT Department - ID: ' + this.id);
+  }
 }
 
 // const accounting = new Department('D', 'Accounting');
@@ -105,8 +116,9 @@ accounting.addReport('Somthing went wrong...');
 accounting.addEmployee('Max');
 console.log(accounting.mostRecentReport);
 accounting.addEmployee('Alura');
-accounting.printReports();
-accounting.printEmployeeInformation();
+// accounting.printReports();
+// accounting.printEmployeeInformation();
+accounting.describe();
 
 const employee1 = Department.createEmployee('Laura');
 console.log(employee1, Department.fiscalAYear);
