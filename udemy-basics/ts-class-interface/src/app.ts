@@ -1,138 +1,70 @@
-// class Sample {
-//   constructor() {} //클래스와 연결되며 객체가 생성되며 실행되는 클래스에 기반해 연결하는 객체에 대한 초기화 작업
-// }
+/**
+ * @description 인터페이스
+ * 처음은 무조건 대문자
+ */
+interface Person {
+  // name: string = 'Max'; //An interface property cannot have an initializer.ts(1246)
+  name: string;
+  age: number;
 
-abstract class Department {
-  static fiscalAYear = 2023;
-  protected employees: string[] = [];
+  greet(parase: string): void;
+}
 
-  //readonly 특정속성 초기화 이후에는 변경 불가하도록 함 => 안전성 증가, 명확한 의도전달
-  constructor(protected readonly id: string, public name: string) {}
+let user1: Person;
 
-  //static (ex. Math )
-  static createEmployee(name: string) {
-    return { name: name };
+user1 = {
+  name: 'Nina',
+  age: 45,
+  greet(phrase: string) {
+    console.log(phrase + '' + this.name);
+  },
+};
+
+user1.greet('Hi there - I am ');
+
+// 읽기 전용 인터페이스 속성
+interface Named {
+  readonly name: string;
+  //선택적 매개변수 & 속성
+  outputName?: string;
+}
+
+// 2. 인터페이스가 확장할 수도 있다. (comma 사용해서 여러개도 가능)
+interface Greetable extends Named {
+  greet(phrase: string): void;
+}
+
+// 1. 상속과의 차이점은 인터페이스는 여러개를 구현할 수 있다
+// class Person implements Greetable, Named {
+class Person implements Greetable {
+  // name: string;
+  // name?: string; 빈문자열이 아닐경우에만 선택
+  outputName?: string; //옵셔널
+  age = 30;
+
+  constructor(n: string) {
+    this.name = n;
   }
 
-  // describe(this: Department) {
-  //   // console.log('Department: ', age); //Cannot find name 'age'.ts(2304)
-  //   console.log(`Department(${this.id}): ${this.name}`);
-  //   // console.log(this.fiscalYear) //Property 'fiscalYear' does not exist on type 'Department'.ts(2339)
-  //   // console.log(Department.fiscalAYear) //OK
-  // }
-
-  //추상클래스
-  abstract describe(this: Department): void;
-
-  addEmployee(employee: string) {
-    this.employees.push(employee);
-  }
-
-  printEmployeeInformation() {
-    console.log(this.employees.length);
-    console.log(this.employees);
+  greet(phrase: string): void {
+    console.log(phrase + '' + this.name);
   }
 }
 
-class ITDepartment extends Department {
-  admins: string[];
-  constructor(id: string, admins: string[]) {
-    super(id, 'IT');
-    this.admins = admins;
-  }
+let user2: Greetable = new Person('Laila');
 
-  describe() {
-    console.log('IT Department - ID: ' + this.id);
-  }
-}
-class AccountingDepartment extends Department {
-  private lastReport: string;
-  private static instance: AccountingDepartment;
+// user2.name('Rirn'); //Property 'name' does not exist on type 'Greetable'.ts(2339)
+user2.greet('Hi there - I am ');
+console.log(user2);
 
-  get mostRecentReport() {
-    if (this.lastReport) {
-      return this.lastReport;
-    }
-    throw new Error('No report found.');
-  }
-
-  set mostRecentReport(value: string) {
-    if (!value) {
-      throw new Error('Please pass in a valid value!');
-    }
-    this.addReport(value);
-  }
-
-  private constructor(id: string, public reports: string[]) {
-    super(id, 'Accounting');
-    this.lastReport = reports[0];
-  }
-
-  addEmployee(name: string) {
-    if (name === 'Max') {
-      return;
-    }
-    this.employees.push(name);
-  }
-
-  addReport(text: string) {
-    this.reports.push(text);
-    this.lastReport = text;
-  }
-
-  printReports() {
-    console.log(this.reports);
-  }
-
-  static getInstance() {
-    if (AccountingDepartment.instance) {
-      return this.instance;
-    }
-    this.instance = new AccountingDepartment('d2', []);
-    return this.instance;
-  }
-
-  describe() {
-    console.log('IT Department - ID: ' + this.id);
-  }
+// type AddFn = (a:number, b:number)=>number
+interface AddFn {
+  //사용자정의 함수 타입
+  (a: number, b: number): number;
 }
 
-// const accounting = new Department('D', 'Accounting');
-const it = new ITDepartment('D', ['Max']);
+let add: AddFn;
 
-console.log(it);
-it.describe();
-
-// const accountingCopy = { describe: accounting.describe };
-// accountingCopy.describe(); //undefined
-// const accountingCopy = { describe: accounting.describe() };
-// accountingCopy.describe;
-// const accountingCopy = { name: 'Laura', describe: accounting.describe };
-// accountingCopy.describe();
-
-it.addEmployee('Mark');
-it.addEmployee('Jax');
-
-// accounting.employees[2] = 'Anna'; //Property 'employees' is private and only accessible within class 'Department'.ts(2341)
-
-it.describe();
-it.printEmployeeInformation();
-console.log(it);
-
-//싱글턴
-// const accounting = new AccountingDepartment('d2', []); //Constructor of class 'AccountingDepartment' is private and only accessible within the class declaration.ts(2673)
-const accounting = AccountingDepartment.getInstance();
-const accounting2 = AccountingDepartment.getInstance();
-
-accounting.mostRecentReport = 'Year and Report';
-accounting.addReport('Somthing went wrong...');
-accounting.addEmployee('Max');
-console.log(accounting.mostRecentReport);
-accounting.addEmployee('Alura');
-accounting2.addEmployee('Alura');
-// accounting.printReports();
-// accounting.printEmployeeInformation();
-accounting.describe();
-
-const employee1 = Department.createEmployee('Laura');
-console.log(employee1, Department.fiscalAYear);
+add = (n1: number, n2: number) => {
+  return n1 + n2;
+};
