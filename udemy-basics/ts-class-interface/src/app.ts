@@ -105,3 +105,12 @@ function moveAnimal(animal: Animal) {
 }
 
 moveAnimal({ type: 'bird', flyingSpeed: 1 });
+// moveAnimal({ type: 'horse', flyingSpeed: 1 }); //Argument of type '{ type: "horse"; flyingSpeed: number; }' is not assignable to parameter of type 'Animal'. Object literal may only specify known properties, and 'flyingSpeed' does not exist in type 'Horse'
+
+//화면에 랜더링 하고자 하는 타입 알려주가
+// const userInput = document.getElementById('user-Input')!;
+// userInput.value = 'Hi there!'; //Property 'value' does not exist on type 'HTMLElement'.ts(2339)
+
+const userInput = <HTMLInputElement>document.getElementById('user-Input')!;
+// const userInput = document.getElementById('user-Input')! as HTMLInputElement;
+userInput.value = 'Hi there!';
