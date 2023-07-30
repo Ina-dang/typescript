@@ -111,6 +111,21 @@ moveAnimal({ type: 'bird', flyingSpeed: 1 });
 // const userInput = document.getElementById('user-Input')!;
 // userInput.value = 'Hi there!'; //Property 'value' does not exist on type 'HTMLElement'.ts(2339)
 
-const userInput = <HTMLInputElement>document.getElementById('user-Input')!;
+const userInput = <HTMLInputElement>document.getElementById('user-Input');
 // const userInput = document.getElementById('user-Input')! as HTMLInputElement;
-userInput.value = 'Hi there!';
+
+if (userInput) {
+  (userInput as HTMLInputElement).value = 'Hi there!';
+}
+
+//인덱스속성
+interface ErrorContainer {
+  //{email:'유효하지 않은 이메일입니다.', username: '값을 입력하세요.' ...몇개가 들어올지 모름}
+  // id:number; //Property 'id' of type 'number' is not assignable to 'string' index type 'string'.ts(2411)
+  [prop: string]: string;
+}
+
+const errorBag: ErrorContainer = {
+  email: '유효한 이메일이 아닙니다.',
+  username: '첫 글자는 영어 대문자를 입력하세요.',
+};
