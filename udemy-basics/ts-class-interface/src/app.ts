@@ -129,3 +129,23 @@ const errorBag: ErrorContainer = {
   email: '유효한 이메일이 아닙니다.',
   username: '첫 글자는 영어 대문자를 입력하세요.',
 };
+
+//함수 오버로드
+const result1 = add100(1, 5);
+const result2 = add100('Max', ' Schwarz') as String;
+// result1.split(' ') //Property 'split' does not exist on type 'string | number'.
+result2.split(' ');
+
+function add101(n: string, b: string): string;
+function add101(a: number, b: number): number;
+function add101(a: string, b: number): string;
+function add101(a: number, b: string): string;
+function add101(a: Combinable, b: Combinable) {
+  if (typeof a === 'string' || typeof b === 'string') {
+    return a.toString() + b.toString();
+  }
+  return a + b;
+}
+const result3 = add101(1, 5);
+const result4 = add101('Max', ' Schwarz');
+result4.split(' ');
