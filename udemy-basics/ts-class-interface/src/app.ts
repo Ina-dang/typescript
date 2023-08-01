@@ -31,6 +31,7 @@ interface Lengthy {
   length: number;
 }
 
+//화살표함수
 const countAndPrint = <T extends Lengthy>(element: T) => {
   let 설명 = '값이 없습니다.';
   if (element.length === 1) {
@@ -42,3 +43,29 @@ const countAndPrint = <T extends Lengthy>(element: T) => {
 };
 
 console.log(countAndPrint(['Sport', 'Cook']));
+
+// keyof 제약조건 => key값을 넘겨줄 때 사용한다. 타입의 키 값들을 유니온 타입으로 반환
+function extractAndConvert<T extends object, U extends keyof T>(
+  obj: T,
+  key: U
+) {
+  console.log(obj, key);
+  return 'Value: ' + obj[key];
+}
+const EAC = extractAndConvert({ name: 'Max' }, 'name');
+// const EAC1 = extractAndConvert({ name: 'Max' }, 'age'); //Argument of type '"age"' is not assignable to parameter of type '"name"'.ts(2345)
+
+console.log('extractAndConvert:: ', EAC);
+
+interface Rabbit {
+  name: string;
+  age: number;
+  place: string;
+  move: () => void;
+}
+type KeyofRabbit = keyof Rabbit;
+
+const rabbit1: KeyofRabbit = 'place';
+// const rabbit2:KeyofRabbit = "food" //Type '"food"' is not assignable to type 'keyof Rabbit'.ts(2322)
+
+console.log(rabbit1);
