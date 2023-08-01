@@ -26,3 +26,19 @@ function merge<T extends object, U>(objA: T, objB: U) {
 }
 const mergeObj = merge({ name: 'Max', hobbies: ['Sports'] }, { age: 30 });
 console.log(mergeObj.age);
+
+interface Lengthy {
+  length: number;
+}
+
+const countAndPrint = <T extends Lengthy>(element: T) => {
+  let 설명 = '값이 없습니다.';
+  if (element.length === 1) {
+    설명 = '길이: 1';
+  } else if (element.length > 0) {
+    설명 = '길이: ' + element.length;
+  }
+  return [element, 설명];
+};
+
+console.log(countAndPrint(['Sport', 'Cook']));
