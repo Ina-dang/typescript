@@ -69,3 +69,37 @@ const rabbit1: KeyofRabbit = 'place';
 // const rabbit2:KeyofRabbit = "food" //Type '"food"' is not assignable to type 'keyof Rabbit'.ts(2322)
 
 console.log(rabbit1);
+
+//제네릭 클래스
+class DataStorage<T extends string | object> {
+  private data: T[] = [];
+
+  addItem(item: T) {
+    this.data.push(item);
+  }
+  removeItem(item: T) {
+    if (this.data.indexOf(item) === -1) {
+      return;
+    }
+    this.data.splice(this.data.indexOf(item), 1);
+  }
+  getItems() {
+    return [...this.data];
+  }
+}
+const textStorage = new DataStorage<string>();
+textStorage.addItem('Adie');
+textStorage.addItem('Nuel');
+textStorage.addItem('Clala');
+textStorage.addItem('Tisie');
+textStorage.removeItem('Nuel');
+
+console.log(textStorage.getItems());
+
+const objStorage = new DataStorage<object>();
+const maxObj = { name: 'Max' };
+objStorage.addItem(maxObj);
+objStorage.addItem({ name: 'Yori' });
+objStorage.addItem({ name: 'Riki' });
+objStorage.removeItem(maxObj);
+console.log(objStorage.getItems());
