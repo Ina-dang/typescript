@@ -14,7 +14,20 @@ function Logger(logString: string) {
   };
 }
 
+function WithTemplate(template: string, hookId: string) {
+  return function (constructor: any) {
+    //타입스크립트 시그널(_)추가
+    const hookEl = document.getElementById(hookId);
+    const p = new constructor();
+    if (hookEl) {
+      hookEl.innerHTML = template;
+      hookEl.querySelector('h1')!.textContent = p.name;
+    }
+  };
+}
+
 @Logger('LOGGING - PERSON') //식별자 어노테이션
+@WithTemplate('<h1>My Person Object</h1>', 'app')
 class Person {
   name = 'Max';
   constructor() {
