@@ -2,7 +2,7 @@
  * @description 인터페이스
  * 처음은 무조건 대문자
  */
-interface Person {
+interface PersonInfo {
   // name: string = 'Max'; //An interface property cannot have an initializer.ts(1246)
   name: string;
   age: number;
@@ -10,7 +10,7 @@ interface Person {
   greet(parase: string): void;
 }
 
-let user1: Person;
+let user1: PersonInfo;
 
 user1 = {
   name: 'Nina',
@@ -35,8 +35,8 @@ interface Greetable extends Named {
 }
 
 // 1. 상속과의 차이점은 인터페이스는 여러개를 구현할 수 있다
-// class Person implements Greetable, Named {
-class Person implements Greetable {
+// class PersonInfo implements Greetable, Named {
+class PersonInfo implements Greetable {
   // name: string;
   // name?: string; 빈문자열이 아닐경우에만 선택
   outputName?: string; //옵셔널
@@ -51,7 +51,7 @@ class Person implements Greetable {
   }
 }
 
-let user2: Greetable = new Person('Laila');
+let user2: Greetable = new PersonInfo('Laila');
 
 // user2.name('Rirn'); //Property 'name' does not exist on type 'Greetable'.ts(2339)
 user2.greet('Hi there - I am ');
