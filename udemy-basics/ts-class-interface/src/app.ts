@@ -9,6 +9,7 @@
 // 데코레이터 팩토리 작업
 function Logger(logString: string) {
   return function (constructor: Function) {
+    console.log('LOGGIN-FACTORY');
     console.log(logString);
     console.log('constructor:: ', constructor);
   };
@@ -16,6 +17,7 @@ function Logger(logString: string) {
 
 function WithTemplate(template: string, hookId: string) {
   return function (constructor: any) {
+    console.log('TEMPLATE-FACTORY');
     //타입스크립트 시그널(_)추가
     const hookEl = document.getElementById(hookId);
     const p = new constructor();
@@ -26,7 +28,7 @@ function WithTemplate(template: string, hookId: string) {
   };
 }
 
-@Logger('LOGGING - PERSON') //식별자 어노테이션
+@Logger('LOGGING-PERSON') //식별자 어노테이션
 @WithTemplate('<h1>My Person Object</h1>', 'app')
 class Person {
   name = 'Max';
