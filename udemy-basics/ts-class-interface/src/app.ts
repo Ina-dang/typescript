@@ -110,3 +110,30 @@ class Products {
 
 const p1 = new Products('Book', 19);
 const p2 = new Products('Apple', 2);
+
+function Autobind(_: any, _2: string, descriptor: PropertyDescriptor) {
+  const originalMethod = descriptor.value;
+  const adjDescriptor: PropertyDescriptor = {
+    configurable: true,
+    enumerable: false,
+
+    // 참조할 객체 트리거
+    get() {
+      const boundFunction = originalMethod.bind(this);
+      return boundFunction;
+    },
+  };
+  return adjDescriptor;
+}
+class Printer {
+  message = 'This works';
+  @Autobind
+  showMessage() {
+    console.log(this.message);
+  }
+}
+
+const p = new Printer();
+const button = document.querySelector('button');
+button?.addEventListener('click', p.showMessage); //undefined => @Autobind 데코레이터를 사용해서 This work 출력하도록 바꿈
+button?.addEventListener('click', p.showMessage.bind(p)); //This works
