@@ -137,3 +137,84 @@ const p = new Printer();
 const button = document.querySelector('button');
 button?.addEventListener('click', p.showMessage); //undefined => @Autobind 데코레이터를 사용해서 This work 출력하도록 바꿈
 button?.addEventListener('click', p.showMessage.bind(p)); //This works
+
+//Validation Decorator
+interface VlidatorConfig {
+  [property: string]: {
+    [validatableProp: string]: string[]; //['required', 'positive']
+  };
+}
+
+const registeredValidators: VlidatorConfig = {};
+
+function Required(target: any, propName: string) {
+  const targetName = target.constructor.name;
+
+  if (propName === 'title') {
+    registeredValidators[targetName] = {
+      ...registeredValidators[targetName],
+      [propName]: [
+        ...(registeredValidators[targetName]?.[propName] ?? []),
+        'required',
+      ],
+    };
+  } else {
+    registeredValidators[targetName] = {
+      ...registeredValidators[targetName],
+      [propName]: [
+        ...(registeredValidators[targetName]?.[propName] ?? []),
+        'positive',
+      ],
+    };
+  }
+}
+
+function validate(obj: any) {
+  const objValidatorConfig = registeredValidators[obj.constructor.name];
+  if (!objValidatorConfig) {
+    return true;
+  }
+
+  let isValid = true;
+
+  for (const prop in objValidatorConfig) {
+    for (const validator of objValidatorConfig[prop]) {
+      switch (validator) {
+        case 'required':
+          isValid = isValid && !!obj[prop];
+          break;
+        case 'positive':
+          isValid = isValid && obj[prop] > 0;
+          break;
+      }
+    }
+  }
+  return isValid;
+}
+class Course {
+  @Required
+  title: string;
+  @Required
+  price: number;
+
+  constructor(t: string, p: number) {
+    this.title = t;
+    this.price = p;
+  }
+}
+
+const courseForm = document.querySelector('form');
+courseForm?.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const titleEl = document.getElementById('title') as HTMLInputElement;
+  const priceEl = document.getElementById('price') as HTMLInputElement;
+
+  const title = titleEl.value;
+  const price = +priceEl.value;
+
+  const createdCourse = new Course(title, price);
+  if (!validate(createdCourse)) {
+    alert('유효하지 않은 입력값입니다.');
+  }
+  console.log(createdCourse);
+});
