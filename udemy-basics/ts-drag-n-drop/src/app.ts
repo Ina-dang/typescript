@@ -1,3 +1,41 @@
+// Project State Management with Singleton
+class ProjectState {
+  //subscription patteren
+  private listeners: any[] = [];
+
+  private projects: any[] = [];
+  private static instance: ProjectState;
+  private constructor() {} //다른 객체들이 싱글턴과 new 연산자를 동시에 사용할 수 없도록 기본 생성자를 private설정
+  static getInstatnce() {
+    if (this.instance) {
+      return this.instance;
+    }
+    this.instance = new ProjectState();
+    return this.instance;
+  }
+
+  addListener(listenerFn: Function) {
+    this.listeners.push(listenerFn);
+  }
+
+  addProject(title: string, description: string, numOfPeople: number) {
+    const newProject = {
+      id: Math.random().toString(),
+      title: title,
+      description: description,
+      people: numOfPeople,
+    };
+    this.projects = [];
+    this.projects.push(newProject);
+    for (const listenerFn of this.listeners) {
+      listenerFn(this.projects.slice());
+    }
+  }
+}
+//state express
+// const projectState = new ProjectState(); //항상 새로운 인스턴스 객체 생성
+const projectState = ProjectState.getInstatnce(); //싱글턴을 사용해 전체(전역접근을 사용)에서 하나의 인스턴스 객체만을 제공한다.
+
 //Validation 객체 구조 정의
 interface Validatable {
   value: string | number;
@@ -61,12 +99,14 @@ class ProjectList {
   templateElement: HTMLTemplateElement;
   hostElement: HTMLDivElement;
   element: HTMLElement;
+  assignedProjects: any[];
 
   constructor(private type: 'active' | 'finished') {
     this.templateElement = document.getElementById(
       'project-list'
     ) as HTMLTemplateElement;
     this.hostElement = document.getElementById('app') as HTMLDivElement;
+    this.assignedProjects = [];
 
     const importedNode = document.importNode(
       this.templateElement.content,
@@ -74,8 +114,24 @@ class ProjectList {
     );
     this.element = importedNode.firstElementChild as HTMLElement;
     this.element.id = `${this.type}-projects`;
+
+    projectState.addListener((projects: any[]) => {
+      this.assignedProjects = projects;
+      this.renderProjects();
+    });
+
     this.render();
     this.renderContent();
+  }
+  private renderProjects() {
+    const listEl = document.getElementById(
+      `${this.type}-projects-list`
+    )! as HTMLUListElement;
+    for (const projectItem of this.assignedProjects) {
+      const listItem = document.createElement('li');
+      listItem.textContent = projectItem.title;
+      listEl?.appendChild(listItem);
+    }
   }
 
   private renderContent() {
@@ -171,7 +227,7 @@ class ProjectInput {
     const userInput = this.gatherUserInput();
     if (Array.isArray(userInput)) {
       const [title, desc, people] = userInput;
-      console.log(title, desc, people);
+      projectState.addProject(title, desc, people);
       this.clearInputs();
     }
   }
