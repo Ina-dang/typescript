@@ -1,3 +1,7 @@
+html {
+  font-family: san-serif;
+}
+
 #map {
   width: 90%;
   height: 20rem;
