@@ -1,5 +1,6 @@
 .bak
 
+
 node_modules/
-git s
+dist/
 package-lock.json
