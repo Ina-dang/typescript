@@ -1,35 +1,35 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.css";
+import { PokemonList } from "./components/PokemonList";
+import { usePokemonStore } from "./store/store";
+
+/**
+ * isLoading
+ * isFetching
+ * isSuccess
+ * isError
+ * @returns
+ */
 
 function App() {
-  const [count, setCount] = useState(0)
+  const updateValue = usePokemonStore((state) => state.updateValue);
+
+  const handleIntervalChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const interval = Number(e.target.value);
+    updateValue(interval);
+  };
 
   return (
-    <>
+    <div className="App">
+      <select onChange={handleIntervalChange}>
+        <option value={0}>Off</option>
+        <option value={1000}>1s</option>
+        <option value={5000}>5s</option>
+      </select>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <PokemonList />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
