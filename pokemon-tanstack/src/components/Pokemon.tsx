@@ -8,10 +8,16 @@ type Props = {
 
 export const Pokemon = ({ name }: Props) => {
   const pollingIntervalValue = usePokemonStore((state) => state.value);
-  const { data, isLoading, isSuccess, isError } = useQuery({
+  const {
+    data: pokeByName,
+    isLoading,
+    isSuccess,
+    isError,
+  } = useQuery({
     queryKey: ["pokemonByName", name],
     queryFn: () => getPokemonByName(name),
     refetchInterval: pollingIntervalValue,
+    staleTime: 5000, //devTools에서 확인
   });
 
   return (
@@ -20,12 +26,15 @@ export const Pokemon = ({ name }: Props) => {
         <>에러가 발생했습니다</>
       ) : isLoading ? (
         <>로딩중...</>
-      ) : data ? (
+      ) : pokeByName ? (
         <>
           <h3>
-            {data.species.name} {isSuccess ? "..." : ""}
+            {pokeByName.species.name} {isSuccess ? "..." : ""}
           </h3>
-          <img src={data.sprites.front_shiny} alt={data.species.name} />
+          <img
+            src={pokeByName.sprites.front_shiny}
+            alt={pokeByName.species.name}
+          />
         </>
       ) : null}
     </div>
