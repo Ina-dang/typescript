@@ -238,3 +238,35 @@ const {
 - [TanStack-query 기본 사용법]('https://mycodings.fly.dev/blog/2024-01-27-how-to-use-tanstack-query-complete-understanding#Frontend')
 - [에러핸들링]('https://growing-jiwoo.tistory.com/110')
 - [인피니트스크롤]('https://oliveyoung.tech/blog/2023-10-04/useInfiniteQuery-scroll/')
+
+## 폴더구조
+
+```bash
+📦pokemon-tanstack
+ ┣ 📂public                       // 정적 파일 저장
+ ┣ 📂src                          // 소스 코드 저장
+ ┃ ┣ 📂assets                     // 이미지, 기타 리소스 관리 폴더
+ ┃ ┣ 📂components                 // 컴포넌트 파일 저장 폴더
+ ┃ ┃ ┣ 📜index.js
+ ┃ ┃ ┣ 📜Pokemon.tsx              // 단일 포켓몬 컴포넌트 파일
+ ┃ ┃ ┗ 📜PokemonList.tsx          // 포켓몬 리스트 컴포넌트 파일
+ ┃ ┣ 📂store                      // 상태관리 파일 저장 폴더 (TanStack-Query 관련)
+ ┃ ┃ ┣ 📜query.ts                 // query api 요청관리 파일
+ ┃ ┃ ┗ 📜store.ts                 // zustand store 관리 파일
+ ┃ ┣ 📂types                      // TypeScript 타입 정의 폴더
+ ┃ ┃ ┗ 📜Poke.ts
+ ┃ ┣ 📜App.css
+ ┃ ┣ 📜App.tsx                    // 애플리케이션의 루트 컴포넌트로 애플리케이션의 전반적인 구조너 레이아웃을 정의 (주로 라우팅 설정, Provider제공, 테마설정 등의 역할 수행)
+ ┃ ┣ 📜index.css
+ ┃ ┣ 📜main.tsx                   // 애플리케이션의 진입점 (필요한 환경설정이나 플러그인 로드 및 초기화 관련작업을 수행하여 웹팩이나 Vite같은 번들러나 빌드도구에서 지정하는 진입파일)
+ ┃ ┗ 📜vite-env.d.ts              // Vite 환경 설정 파일
+ ┣ 📜.eslintrc.cjs                // eslint 설정파일
+ ┣ 📜.gitignore                   // Git으로 추적하지 않을 파일이나 폴더를 지정
+ ┣ 📜index.html                   // 애플리케이션의 진입점 HTML 파일
+ ┣ 📜package-lock.json            // npm 패키지의 의존성 트리 잠금 파일
+ ┣ 📜package.json                 // 프로젝트의 메타데이터, 의존성 정보 파일
+ ┣ 📜README.md                    // 프로젝트 설명이 담긴 마크다운 파일
+ ┣ 📜tsconfig.json                // TypeScript 설정 파일
+ ┣ 📜tsconfig.node.json           // Node.js에서 실행되는 TypeScript 설정 파일
+ ┗ 📜vite.config.ts               // vite.config.ts: Vite 빌드 도구의 설정 파일
+```
