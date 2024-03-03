@@ -27,9 +27,6 @@ function App() {
         <option value={5000}>5s</option>
       </select>
       <div>
-        {/* {pokemon.map((poke, index) => (
-          <Pokemon key={index} name={poke} pollingInterval={pollingInterval} />
-        ))} */}
         <PokemonList />
       </div>
     </div>

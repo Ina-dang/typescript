@@ -1,6 +1,7 @@
-export type Poke = {
+type Poke = {
   id: number;
   name: string;
+  types: { type: { name: string } }[]; // types 속성을 객체 배열로 정의
   species: {
     name: string;
     // species와 관련된 다른 속성들을 여기에 추가할 수 있습니다.
@@ -23,3 +24,5 @@ type PokemonListItem = {
   name: string;
   url: string;
 };
+
+export type { Poke, PokemonListResponse, PokemonListItem };

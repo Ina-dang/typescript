@@ -1,4 +1,4 @@
-# React + Zustand + Tanstack Query
+# 포켓몬 api with Zustand + Tanstack Query
 
 ## Zustand?
 
@@ -228,6 +228,8 @@ const {
 - queryChache는 백엔드와 통신하는 데이터에만 사용하는게 좋다.
 - 백그라운드에서 다시 가져올 때마다 데이터가 재정의 되기때문에, 로컬 상태는 useState hook 또는 다른 상태관리 툴을 사용하는것을 추천한다.
 - 비동기 로직들이 컴포넌트 별로 분산되어있기 때문에, 프로젝트 설계에 신경쓰지 않았을 경우 운영 시 흐름 파악이 오히려 더 어려울 수 있다.
+
+---
 
 ## 참고
 
