@@ -128,14 +128,15 @@ test('throw when no is negative', () => {
 });
 
 // toBe대신 적절한 매처함수를 사용해야 정확히 어떤 속성이 다르고 어디서 오류가 난건지 Vitest에서 피드백을 받을 수 있음
-// test('toBe', () => {
-//   const obj1 = { a: 1, b: 2 };
-//   const obj2 = { a: 1, b: 3 };
-//   expect(JSON.stringify(obj1) === JSON.stringify(obj2)).toBe(true);
-// });
+test.skip('toBe', () => {
+  const obj1 = { a: 1, b: 2 };
+  const obj2 = { a: 1, b: 3 };
+  expect(JSON.stringify(obj1) === JSON.stringify(obj2)).toBe(true);
+});
 
-// test('toEqual', () => {
-//   const obj1 = { a: 1, b: 2 };
-//   const obj2 = { a: 1, b: 3 };
-//   expect(obj1).toEqual(obj2);
-// });
+// skip함수를 쓰면 테스트를 제외하고 실행한다. 반대로 only 함수를 쓰면 특정 테스트만 실행한다.
+test.skip('toEqual', () => {
+  const obj1 = { a: 1, b: 2 };
+  const obj2 = { a: 1, b: 3 };
+  expect(obj1).toEqual(obj2);
+});
