@@ -128,14 +128,14 @@ test('throw when no is negative', () => {
 });
 
 // toBe대신 적절한 매처함수를 사용해야 정확히 어떤 속성이 다르고 어디서 오류가 난건지 Vitest에서 피드백을 받을 수 있음
-test('toBe', () => {
-  const obj1 = { a: 1, b: 2 };
-  const obj2 = { a: 1, b: 3 };
-  expect(JSON.stringify(obj1) === JSON.stringify(obj2)).toBe(true);
-});
+// test('toBe', () => {
+//   const obj1 = { a: 1, b: 2 };
+//   const obj2 = { a: 1, b: 3 };
+//   expect(JSON.stringify(obj1) === JSON.stringify(obj2)).toBe(true);
+// });
 
-test('toEqual', () => {
-  const obj1 = { a: 1, b: 2 };
-  const obj2 = { a: 1, b: 3 };
-  expect(obj1).toEqual(obj2);
-});
+// test('toEqual', () => {
+//   const obj1 = { a: 1, b: 2 };
+//   const obj2 = { a: 1, b: 3 };
+//   expect(obj1).toEqual(obj2);
+// });
